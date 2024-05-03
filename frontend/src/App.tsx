@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // Pages
 import LandingPage from './pages/LandingPage.tsx'
 import Signup from './pages/Signup.tsx'
+import HomePage from './pages/HomePage.tsx';
+import CreateTeam from './pages/CreateTeam.tsx';
 
 function App() {
 
@@ -13,6 +15,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/signup" element={<Signup/>}/>
+        <Route path="/dashboard" element={<HomePage/>}/>
+        <Route path="/create-team" element={<CreateTeam/>}/>
       </Routes>
     </BrowserRouter>
   )

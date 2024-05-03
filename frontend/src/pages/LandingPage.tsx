@@ -60,7 +60,7 @@ const LandingPage = () => {
         }
 
         sessionStorage.setItem("username",formUsername);
-        nav("/home")
+        nav("/dashboard")
     };
 
     return(
@@ -105,7 +105,7 @@ const LandingPage = () => {
                     </form>
                 </div>
             </div>
-            <DunkImage src='https://media.giphy.com/media/CXqkzbn89kOfxmhAWL/giphy.gif'/>
+            <DunkImage src='https://media.giphy.com/media/3oEjI7tZ0VjyBmptDy/giphy.gif'/>
         </div>
     )
 }

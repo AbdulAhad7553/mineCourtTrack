@@ -1,7 +1,7 @@
 import User from "../models/User.js"
 
 export const login = async(req,res) => {
-    
+    console.log("Login in Request -- recived")
     try{
         const {username, password} = req.body;
         if(!username || !password){

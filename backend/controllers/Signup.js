@@ -1,7 +1,7 @@
 import User from "../models/User.js"
 
 export const signup = async(req,res) => {
-    
+    console.log("Sign up Request -- recived")
     try{
         const {username, password} = req.body;
         if(!username || !password){
@@ -11,7 +11,7 @@ export const signup = async(req,res) => {
             })
         }
 
-        const thisUser = await User.findOne({username:username});
+        let thisUser = await User.findOne({username:username});
         if(thisUser){
             return res.status(404).json({
                 status: 'fail',
