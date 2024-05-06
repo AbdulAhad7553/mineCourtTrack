@@ -1,6 +1,7 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/utils/Navbar";
 import EnterTeamDetail from "../components/teams/EnterTeamDetail";
+import AddPlayers from "../components/teams/AddPlayers";
 
 const CreateTeam = () => {
     const [teamName, setTeamName] = useState("");
@@ -8,7 +9,7 @@ const CreateTeam = () => {
     const [secondaryColor, setSecondaryColor] = useState('#000000');
 
     return (
-        <div className="flex items-center justify-center h-screen bg-zinc-700">
+        <div className="flex items-center justify-center h-full bg-zinc-700">
             <div className="relative w-4/5 h-full bg-neutral-100 shadow-lg rounded-lg">
                 <Navbar/>
                 <EnterTeamDetail 
@@ -19,13 +20,8 @@ const CreateTeam = () => {
                     secondaryColor={secondaryColor}
                     setSecondaryColor={setSecondaryColor}
                 />
-                <div className="flex p-8 h-full"> {/* Adjusted for full height and flex layout */}
-                    <div className="flex flex-col flex-1 mr-6">
-                    
-                    </div>
-                    <div className="flex flex-col flex-1">
-                        sdasda
-                    </div>
+                <div className="relative h-full mt-5">
+                    <AddPlayers teamName={teamName}/>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import DunkImage from '../components/MovingImage.tsx'
+import DunkImage from '../components/utils/MovingImage.tsx'
 import axios from 'axios';
 import { API_BASE_URL } from '../config/config.tsx'; 
 import { ToastContainer, toast } from 'react-toastify';

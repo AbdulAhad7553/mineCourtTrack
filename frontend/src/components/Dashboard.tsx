@@ -1,4 +1,4 @@
-import Navbar from './Navbar'; // Adjust the path as needed
+import Navbar from './utils/Navbar'; // Adjust the path as needed
 import { Link } from 'react-router-dom';
 
 // import store from '../redux/store.js'

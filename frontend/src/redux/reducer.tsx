@@ -12,8 +12,7 @@ export default function reducer(state = [], action) {
                 position: action.payload.position,
                 age: action.payload.age,
                 affiliation: action.payload.affiliation,
-                phoneNumber: action.payload.phoneNumber,
-                batchNumber: action.payload.batchNumber
+                phoneNumber: action.payload.phoneNumber
             }
         ];
     else if(action.type === ActionTypes.PLAYER_REMOVED)
