@@ -9,6 +9,9 @@ export default {
       zIndex: {
         negative: '-100',  // Custom class name and value
       },
+      fontFamily: {
+        atlanta: ['AtlantaCollegeRegular','sans-serif']
+      },
     },
   },
   plugins: [],

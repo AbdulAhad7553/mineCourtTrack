@@ -1,4 +1,4 @@
-import Navbar from './utils/Navbar'; // Adjust the path as needed
+import Navbar from './navBar_componets/Navbar'; // Adjust the path as needed
 import { Link } from 'react-router-dom';
 
 // import store from '../redux/store.js'
@@ -9,7 +9,7 @@ const Dashboard = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="relative w-4/5 h-4/5 bg-neutral-100 shadow-lg rounded-lg">
-          <Navbar />
+          <Navbar pageIndex={1} />
           <div className="flex p-8 h-full"> {/* Adjusted for full height and flex layout */}
             <div className="flex flex-col flex-1 mr-6"> {/* 60% width for the left section, use flex-col for vertical layout */}
                 <h1 className="text-2xl font-bold mb-4">Dashboard Content</h1>
