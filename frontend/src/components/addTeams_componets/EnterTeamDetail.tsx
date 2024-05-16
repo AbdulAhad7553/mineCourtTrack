@@ -1,9 +1,11 @@
 import { useState } from "react"
 
 
-const EnterTeamDetail = ({ teamName, setTeamName, primaryColor, setPrimaryColor,secondaryColor,setSecondaryColor }) => {
+const EnterTeamDetail = ({ teamName, setTeamName, primaryColor, setPrimaryColor,secondaryColor,setSecondaryColor, coach, setCoach, teamManager, setTeamManager }) => {
     // const [teamName, setTeamName] = useState("");
     const [teamNameError, setTeamNameError] = useState(false);
+    const [coachError, setCoachError] = useState(false);
+    const [teamManagerError, setTeamManagerError] = useState(false);
     const [inputWidth, setInputWidth] = useState('250px');
     // const [primaryColor, setPrimaryColor] = useState('#FFFFFF');
     // const [secondaryColor, setSecondaryColor] = useState('#000000');
@@ -15,9 +17,36 @@ const EnterTeamDetail = ({ teamName, setTeamName, primaryColor, setPrimaryColor,
         }
         else{
             setTeamNameError(false);
-        }
-;
+        };
         setTeamName(name);
+
+        const newWidth = Math.min(Math.max(250, name.length * 10),400) + 'px';
+        setInputWidth(newWidth);
+    }
+
+    const handleCoachChange = (e) => {
+        const name = e.target.value;
+        if(name.length <= 1){
+            setCoachError(true);
+        }
+        else{
+            setCoachError(false);
+        };
+        setCoach(name);
+
+        const newWidth = Math.min(Math.max(250, name.length * 10),400) + 'px';
+        setInputWidth(newWidth);
+    }
+
+    const handleTeamManagerChange = (e) => {
+        const name = e.target.value;
+        if(name.length <= 1){
+            setTeamManagerError(true);
+        }
+        else{
+            setTeamManagerError(false);
+        };
+        setTeamManager(name);
 
         const newWidth = Math.min(Math.max(250, name.length * 10),400) + 'px';
         setInputWidth(newWidth);
@@ -37,7 +66,7 @@ const EnterTeamDetail = ({ teamName, setTeamName, primaryColor, setPrimaryColor,
                             placeholder="Enter team name"
                             value={teamName}
                             onChange={handelTeamNameChange}/>
-                        {teamNameError && <p className="text-red-500 text-xs italic">Username must be 2 characters long</p>}
+                        {teamNameError && <p className="text-red-500 text-xs italic">Team name must be 2 characters long</p>}
                     </div>
 
                     <div>
@@ -58,6 +87,34 @@ const EnterTeamDetail = ({ teamName, setTeamName, primaryColor, setPrimaryColor,
                             className="w-12 h-12 rounded-full cursor-pointer"
                         />
                     </div>
+
+
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Coach</label>
+                        <input type="text"
+                            id="coach"
+                            className="rounded px-1 py-1"
+                            style={{ width: inputWidth }}
+                            placeholder="Enter Coach name"
+                            value={coach}
+                            onChange={handleCoachChange}/>
+                        {coachError && <p className="text-red-500 text-xs italic">The name for the coach must be at least 2 characters long</p>}
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Team Manager</label>
+                        <input type="text"
+                            id="team-manager"
+                            className="rounded px-1 py-1"
+                            style={{ width: inputWidth }}
+                            placeholder="Enter Team Manager name"
+                            value={teamManager}
+                            onChange={handleTeamManagerChange}/>
+                        {teamManagerError && <p className="text-red-500 text-xs italic">The name for the Team Manager must be at least 2 characters long</p>}
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
