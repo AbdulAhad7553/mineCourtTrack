@@ -1,10 +1,15 @@
 import Navbar from './navBar_componets/Navbar'; // Adjust the path as needed
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 // import store from '../redux/store.js'
 
 const Dashboard = () => {
 //   console.log(store.getState())
+  const navigate = useNavigate();
+  const handleEditTeams = () => {
+    navigate('/edit-teams');
+  };
 
     return (
       <div className="flex items-center justify-center h-screen">
@@ -19,7 +24,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-2 gap-4"> {/* Grid layout for buttons */}
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">View Teams</button>
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">View Match History</button>
-                <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">Edit Teams</button>
+                <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleEditTeams}>Edit Teams</button>
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">View Player Stats</button>
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">
                     <Link to="/create-team" className="block w-full h-full text-center">

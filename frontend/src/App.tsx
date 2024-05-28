@@ -8,6 +8,8 @@ import Signup from './pages/Signup.tsx'
 import HomePage from './pages/HomePage.tsx';
 //import CreateTeam from './pages/CreateTeam.tsx';
 import CreateTeams from './pages/CreateTeams.tsx';
+import AddPlayers from './pages/AddPlayers.tsx';
+import EditTeams from './pages/EditTeams.tsx';
 function App() {
 
   return (
@@ -17,6 +19,9 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/dashboard" element={<HomePage/>}/>
         <Route path="/create-team" element={<CreateTeams/>}/>
+        <Route path="/addplayers" element={<AddPlayers/>}/>
+        <Route path="/edit-teams" element={<EditTeams/>}/>
+
       </Routes>
     </BrowserRouter>
   )

@@ -3,7 +3,7 @@
 
 
 
-
+import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import axios from "axios";
 import Navbar from "../components/navBar_componets/Navbar";
@@ -17,6 +17,7 @@ const CreateTeams = () => {
   const [coach, setCoach] = useState("");
   const [teamManager, setTeamManager] = useState("");
   const [teamId, setTeamId] = useState(null);
+  const navigate = useNavigate();
 
   const handleCreateTeam = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -33,7 +34,10 @@ const CreateTeams = () => {
       const response = await axios.post(`${API_BASE_URL}/addteam-req`, newTeam);
       if (response.status === 201) {
         alert("Team created successfully");
+        const teamData = response.data.teamData;
+        console.log("teamData jo backend se mangwaya hai :  ", teamData);
         setTeamId(response.data._id); // Save the team ID
+        navigate('/addplayers', { state: {teamData}});
       } else {
         throw new Error("Error creating team");
       }

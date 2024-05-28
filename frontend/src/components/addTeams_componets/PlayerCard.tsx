@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../../assets/fonts/fonts.css'
+import '../../assets/fonts/fonts.css';
 
 interface Player {
     id: number;
@@ -13,15 +13,20 @@ interface Player {
 
 interface PlayerCardProps {
     player: Player;
+    teamColor: string; // Ensure teamColor is part of the props
 }
 
-const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor }:{player:PlayerCardProps,teamColor:String}) => {
-
+const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor }) => {
     const [textColor, setTextColor] = useState('#000000');
 
-    const updateTextColor = (hexColor:String) => {
+    const updateTextColor = (hexColor: string) => {
+        // Validate hexColor before processing
+        if (!hexColor || typeof hexColor !== 'string') return;
+
         // Remove the hash at the start if it's there
         const hex = hexColor.replace('#', '');
+        if (hex.length !== 6) return; // Ensure hex is valid
+
         const r = parseInt(hex.substring(0, 2), 16);
         const g = parseInt(hex.substring(2, 4), 16);
         const b = parseInt(hex.substring(4, 6), 16);
@@ -56,7 +61,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor }:{player:Pla
                 <p>Phone: {player.phoneNumber}</p>
             </div>
             <div className="flex w-2/5 justify-center ">
-                <h2 className="text-9xl font-atlanta">{player.jerseyNumber}</h2>  
+                <h2 className="text-9xl font-atlanta">{player.jerseyNumber}</h2>
             </div>
         </div>
     );

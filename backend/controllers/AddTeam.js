@@ -17,7 +17,7 @@ export const AddTeam = async(req,res)=>{
         console.log("Team added in the database successfully");
         res.status(201).json({
             message: "Team added successfully",
-            player: savedTeam
+            teamData: savedTeam
         });
     }
     catch(error){
