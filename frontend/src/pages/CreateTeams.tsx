@@ -1,5 +1,3 @@
-// GPT WALI FILEE
-
 
 
 
@@ -9,6 +7,7 @@ import axios from "axios";
 import Navbar from "../components/navBar_componets/Navbar";
 import EnterTeamDetail from "../components/addTeams_componets/EnterTeamDetail";
 import { API_BASE_URL } from "../config/config";
+import { Image } from "cloudinary-react"
 
 const CreateTeams = () => {
   const [teamName, setTeamName] = useState("");
@@ -18,6 +17,40 @@ const CreateTeams = () => {
   const [teamManager, setTeamManager] = useState("");
   const [teamId, setTeamId] = useState(null);
   const navigate = useNavigate();
+  const [teamImage, setTeamImage] = useState<File>();
+  const [imageData, setImageData] = useState<any>(null);
+
+
+
+  const uploadImage = () => {
+    const formData = new FormData()
+    formData.append("file", teamImage);
+    formData.append("upload_preset", "vt1zjl7d")
+    // Replace YOUR_UPLOAD_PRESET with your cloudinary upload_preset which looks something like this: sdfmpeitro
+
+    const postImage = async () => {
+      try {
+        const imgresponse = await axios.post(
+          "https://api.cloudinary.com/v1_1/dm56xy1oj/image/upload",
+          formData
+          // Replace YOUR_CLOUD_NAME with your cloudName which you can find in your Dashboard
+        )
+        setImageData(imgresponse.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    postImage();
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setTeamImage(file);
+    }
+  };
+
 
   const handleCreateTeam = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -26,8 +59,10 @@ const CreateTeams = () => {
       primaryColor,
       secondaryColor,
       coach,
-      teamManager
+      teamManager,
+      teamPhotoURL: imageData.public_id
     };
+    
 
     try {
       console.log("Sending team data to the backend -- ", newTeam);
@@ -63,6 +98,24 @@ const CreateTeams = () => {
           setTeamManager = {setTeamManager}
         />
         <div className="flex justify-center mt-5">
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        <button onClick={uploadImage}>Upload Image</button>
+
+
+          {/* Display uploaded image */}
+          {imageData && (
+            <Image
+              cloudName="dm56xy1oj"
+              publicId={imageData.public_id}
+              width="300"
+              crop="scale"
+            />
+          )}
           <button
             className="bg-blue-600 hover:bg-blue-800 text-white mb-2 font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
             onClick={handleCreateTeam}

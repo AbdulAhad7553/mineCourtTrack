@@ -1,10 +1,10 @@
 import Team from "../models/team.js";
 
 export const UpdateTeam = async(req,res) => {
-    console.log("Update Team request -- received");
+    console.log("Update Team request -- received", req.body);
 
     const { id } = req.params;
-    const { name, primaryColor, secondaryColor, coach, teamManager, players } = req.body;
+    const { name, primaryColor, secondaryColor, coach, teamManager, players, teamPhotoURL } = req.body;
 
     try{
         const updatedTeam = await Team.findByIdAndUpdate(
@@ -16,6 +16,7 @@ export const UpdateTeam = async(req,res) => {
               coach,
               teamManager,
               players,
+              teamPhotoURL
             },
             { new: true } // Return the updated document
           );

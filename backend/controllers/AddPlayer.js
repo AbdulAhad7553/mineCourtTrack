@@ -2,10 +2,11 @@ import Player from "../models/player.js";
 import Team from "../models/team.js";
 
 
+
 export const AddPlayer = async(req,res)=> {
-    console.log("AddPlayer request -- received");
+    console.log("AddPlayer request -- received", req.body);
     try{
-        const {name, jerseyNumber, position, age, affiliation, phoneNumber, teamId} = req.body;
+        const {name, jerseyNumber, position, age, affiliation, phoneNumber, teamId, playerPhotoURL} = req.body;
 
         // Find the team by its teamId
         const team = await Team.findById(teamId);
@@ -21,12 +22,13 @@ export const AddPlayer = async(req,res)=> {
             age,
             affiliation,
             phoneNumber,
-            teamId
+            teamId,
+            playerPhotoURL
         });
 
         //Saving the new player to database
         const savedPlayer = await newPlayer.save();
-
+        console.log("saved_player:  ", savedPlayer);
         // Add the player to the team's players array
         team.players.push(savedPlayer._id);
 

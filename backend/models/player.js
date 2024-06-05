@@ -8,7 +8,8 @@ const playerSchema = new mongoose.Schema({
     affiliation: { type: String },
     phoneNumber: { type: Number },
     teamId: { type: Schema.Types.ObjectId, ref: 'Team', required: true },
-    gameStats: [{ type: Schema.Types.ObjectId, ref: 'GameStat' }]
+    gameStats: [{ type: Schema.Types.ObjectId, ref: 'GameStat' }],
+    playerPhotoURL:{type: String}
 });
 
 // Composite unique index

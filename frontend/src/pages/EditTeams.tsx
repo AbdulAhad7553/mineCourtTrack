@@ -5,8 +5,8 @@ import { API_BASE_URL } from "../config/config";
 import Navbar from "../components/navBar_componets/Navbar";
 import TeamCard from "../components/editTeams_components/TeamCard";
 import PlayerCard from "../components/addTeams_componets/PlayerCard";
-import AddPlayers from "./AddPlayers"; // Adjust the path as necessary
-
+//import AddPlayers from "./AddPlayers"; // Adjust the path as necessary
+import {Image} from "cloudinary-react";
 interface Team {
   _id: string;
   name: string;
@@ -32,6 +32,9 @@ const EditTeams = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [view, setView] = useState<'edit' | 'add' | 'remove'>('edit');
+  const [teamImage, setTeamImage] = useState<File | null>(null);
+  const [imageData, setImageData] = useState<any>(null);
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchTeams = async () => {
@@ -47,18 +50,79 @@ const EditTeams = () => {
     fetchTeams();
   }, []);
 
+  const uploadImage = () => {
+    if (!teamImage) return;
+  
+    const formData = new FormData();
+    formData.append("file", teamImage);
+    formData.append("upload_preset", "vt1zjl7d");
+  
+    const postImage = async () => {
+      try {
+        const imgresponse = await axios.post(
+          "https://api.cloudinary.com/v1_1/dm56xy1oj/image/upload",
+          formData
+        );
+        setImageData(imgresponse.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    postImage();
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setTeamImage(file);
+    }
+  };
+  
+  
   const handleTeamClick = (team: Team) => {
     setSelectedTeam(team);
     setView('edit'); // Reset view to edit when a new team is selected
   };
 
+  // const handleSaveChanges = async () => {
+  //   if (!selectedTeam) return;
+
+  //   try {
+  //     const response = await axios.put(
+  //       `${API_BASE_URL}/updateteam/${selectedTeam._id}`,
+  //       selectedTeam
+  //     );
+  //     if (response.status === 200) {
+  //       alert("Team updated successfully");
+  //       const updatedTeam = response.data;
+  //       setTeams(
+  //         teams.map((team) =>
+  //           team._id === updatedTeam._id ? updatedTeam : team
+  //         )
+  //       );
+  //       setSelectedTeam(updatedTeam);
+  //       window.location.reload();
+  //     } else {
+  //       throw new Error("Error updating team");
+  //     }
+  //   } catch (error) {
+  //     console.error("UpdateTeam Error:", error);
+  //   }
+  // };
+
   const handleSaveChanges = async () => {
     if (!selectedTeam) return;
-
+  
+    const updatedTeamData = {
+      ...selectedTeam,
+      teamPhotoURL: imageData ? imageData.public_id : selectedTeam.teamPhotoURL
+    };
+  
     try {
       const response = await axios.put(
         `${API_BASE_URL}/updateteam/${selectedTeam._id}`,
-        selectedTeam
+        updatedTeamData
       );
       if (response.status === 200) {
         alert("Team updated successfully");
@@ -69,6 +133,7 @@ const EditTeams = () => {
           )
         );
         setSelectedTeam(updatedTeam);
+        window.location.reload();
       } else {
         throw new Error("Error updating team");
       }
@@ -76,7 +141,7 @@ const EditTeams = () => {
       console.error("UpdateTeam Error:", error);
     }
   };
-
+  
   const handleAddPlayerClick = (team) => {
     navigate('/addplayers', { state: { teamData: team } });
   };
@@ -220,10 +285,39 @@ const EditTeams = () => {
                     placeholder="Team Manager"
                   />
                 </div>
+                <div>
+  <label className="block text-sm font-medium mb-1">
+    Team Image
+  </label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageChange}
+  />
+  <button
+    type="button"
+    onClick={uploadImage}
+    className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
+  >
+    Upload Image
+  </button>
+</div>
+{imageData && (
+  <div className="mt-4">
+    <Image
+      cloudName="dm56xy1oj"
+      publicId={imageData.public_id}
+      width="300"
+      crop="scale"
+    />
+  </div>
+)}
+
 
                 <button
                   type="submit"
                   className="bg-green-600 hover:bg-green-800 text-white mb-2 mt-8 font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                  onClick={handleSaveChanges}
                 >
                   Save Changes
                 </button>

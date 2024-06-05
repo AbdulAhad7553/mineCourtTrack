@@ -7,6 +7,15 @@ import { GetTeams } from '../controllers/GetTeams.js';
 import { UpdateTeam } from '../controllers/UpdateTeam.js';
 import { RemovePlayer } from '../controllers/RemovePlayer.js';
 import { GetPlayers } from '../controllers/GetPlayers.js';
+import { createNewGame } from '../controllers/NewGame.js';
+import { getGameDetails } from '../controllers/GetGameDetails.js';
+import { EndGame } from '../controllers/EndGame.js';
+import { getPlayerStats } from '../controllers/GetPlayerStats.js';
+import { getLeaderboard } from '../controllers/GetLeaderboard.js';
+import { TeamPhoto } from '../controllers/TeamPhoto.js';
+import parser from '../config/multerConfig.js';
+import { PlayerPhoto } from '../controllers/PlayerPhoto.js';
+
 const BasicUser = express.Router();
 
 BasicUser.post('/login-req', login);
@@ -17,4 +26,11 @@ BasicUser.get('/get-teams', GetTeams);
 BasicUser.put('/updateteam/:id', UpdateTeam);
 BasicUser.put('/remove-player/:teamId/:playerId', RemovePlayer);
 BasicUser.get('/get-players/:teamId', GetPlayers);
+BasicUser.post('/newgame', createNewGame);
+BasicUser.get('/get-game/:gameId', getGameDetails)
+BasicUser.post('/end-match/:gameId', EndGame);
+BasicUser.get('/get-player-stats/:playerId', getPlayerStats);
+BasicUser.get('/leaderboard', getLeaderboard);
+BasicUser.post('/uploadTeamPhoto/:teamId', parser.single('image'), TeamPhoto);
+BasicUser.post('/uploadPlayerPhoto/:playerId', parser.single('image'), PlayerPhoto);
 export default BasicUser;

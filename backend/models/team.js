@@ -7,6 +7,7 @@ const teamSchema = new mongoose.Schema({
   coach: { type: String},
   teamManager: { type: String},
   players: [{ type: Schema.Types.ObjectId, ref: "Player" }], // Array of player IDs
+  teamPhotoURL: {type: String}
 });
 
 const Team = mongoose.model('Team', teamSchema);

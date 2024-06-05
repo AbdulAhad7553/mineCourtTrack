@@ -1,15 +1,16 @@
 import Team from "../models/team.js";
 export const AddTeam = async(req,res)=>{
-    console.log("AddTeam request -- received");
+    console.log("AddTeam request -- received", req.body);
     try{
-        const { name, primaryColor, secondaryColor, coach, teamManager } = req.body;
+        const { name, primaryColor, secondaryColor, coach, teamManager, teamPhotoURL } = req.body;
 
         const newTeam = new Team({
             name,
             primaryColor,
             secondaryColor,
             coach,
-            teamManager
+            teamManager,
+            teamPhotoURL
         });
 
         const savedTeam = await newTeam.save();
