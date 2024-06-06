@@ -286,32 +286,32 @@ const EditTeams = () => {
                   />
                 </div>
                 <div>
-  <label className="block text-sm font-medium mb-1">
-    Team Image
-  </label>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={handleImageChange}
-  />
-  <button
-    type="button"
-    onClick={uploadImage}
-    className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
-  >
-    Upload Image
-  </button>
-</div>
-{imageData && (
-  <div className="mt-4">
-    <Image
-      cloudName="dm56xy1oj"
-      publicId={imageData.public_id}
-      width="300"
-      crop="scale"
-    />
-  </div>
-)}
+                  <label className="block text-sm font-medium mb-1">
+                    Team Image
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={uploadImage}
+                    className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                  >
+                    Upload Image
+                  </button>
+                </div>
+              {imageData && (
+                <div className="mt-4">
+                  <Image
+                    cloudName="dm56xy1oj"
+                    publicId={imageData.public_id}
+                    width="300"
+                    crop="scale"
+                  />
+                </div>
+              )}
 
 
                 <button
@@ -364,13 +364,15 @@ const EditTeams = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {selectedTeam.players.map((player) => (
                         <div key={player._id} className="flex items-center">
-                          <PlayerCard
-                            player={player}
-                            teamColor={selectedTeam.primaryColor} // Pass teamColor prop
-                            onClick={() => console.log('Player clicked', player)}
-                          />
+                          <div className="flex-1">
+                            <PlayerCard
+                              player={player}
+                              teamColor={selectedTeam.primaryColor} // Pass teamColor prop
+                              onClick={() => console.log('Player clicked', player)}
+                            />
+                          </div>
                           <button
-                            className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 ml-2 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                            className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 ml-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
                             onClick={() => handleRemovePlayer(selectedTeam._id, player._id)}
                           >
                             Remove
@@ -379,6 +381,7 @@ const EditTeams = () => {
                       ))}
                     </div>
                   </div>
+
                 )}
               </div>
             </div>

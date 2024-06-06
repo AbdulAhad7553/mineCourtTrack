@@ -112,7 +112,7 @@ const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
             <th>2-Pts</th>
             <th>3-Pts</th>
             <th>Assists</th>
-            <th>Rebounds</th>
+            <th>Rebs</th>
             <th>Steals</th>
             <th>Blocks</th>
             <th>Pts/Assts/Rebs/Stls/Blks/Fls</th>

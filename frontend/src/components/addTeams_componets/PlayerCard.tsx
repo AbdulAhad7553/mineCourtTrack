@@ -179,8 +179,6 @@
 
 
 
-
-
 import React, { useEffect, useState } from "react";
 import { CLOUDINARY_BASE_URL } from "../../config/config";
 
@@ -192,17 +190,20 @@ interface Player {
   age: number;
   affiliation: string;
   phoneNumber: string;
-  playerPhotoURL: string; // Add this field to include player's photo URL
+  playerPhotoURL: string;
 }
 
 interface PlayerCardProps {
   player: Player;
-  teamColor: string; // Add teamColor as a prop
+  teamColor: string;
+  isSelected: boolean;
   onClick: () => void;
 }
 
-const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor, onClick }) => {
+const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor, isSelected, onSelect }) => {
   const [textColor, setTextColor] = useState("#000000");
+  
+  //console.log("isSelected: ", isSelected);
 
   const updateTextColor = (hexColor: string) => {
     const hex = hexColor.replace("#", "");
@@ -213,25 +214,20 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor, onClick }) =
     setTextColor(luminance > 0.4 ? "#000000" : "#FFFFFF");
   };
 
-   console.log("playerPHOTO.URL: ", player.playerPhotoURL);
-   console.log("CLOUDINARY URL: ",`(${CLOUDINARY_BASE_URL}${player.playerPhotoURL}.jpg)`);
-
   useEffect(() => {
     updateTextColor(teamColor);
   }, [teamColor]);
 
   return (
     <div
-      className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
-      onClick={onClick}
+      className={`h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer ${isSelected ? 'border-4 border-green-500' : ''}`}
+      onClick={onSelect}
+      style={{ backgroundColor: teamColor }}
     >
-      {/* right half of the player card */}
       <div
         className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-        style={{ backgroundImage: `url(${CLOUDINARY_BASE_URL}${player.playerPhotoURL}.jpg)`, zIndex: '9999' }}
+        style={{ backgroundImage: `url(${CLOUDINARY_BASE_URL}${player.playerPhotoURL}.jpg)` }}
       ></div>
-
-      {/* left half of the player card */}
       <div
         className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-100"
         style={{ backgroundColor: teamColor }}
@@ -245,7 +241,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor, onClick }) =
               <span className="font-semibold underline">Player</span>:{" "}
               <span>{player.name}</span>
             </h3>
-            <div className="flex flex-col mt-10">
+            <div className="flex flex-col mt-1">
               <span>
                 <span className="font-semibold underline">Position</span>:{" "}
                 <span>{player.position}</span>

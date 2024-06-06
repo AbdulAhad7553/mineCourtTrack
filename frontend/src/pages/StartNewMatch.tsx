@@ -71,6 +71,9 @@ const StartNewMatch = () => {
             }
             updateAwaySubstitutes([...awayStartingFive, player], awayPlayers);
         }
+
+        console.log("homeStartingFive: ", homeStartingFive);
+        console.log("awayStartingFive: ", awayStartingFive);
     };
 
     const updateHomeSubstitutes = (startingFive, allPlayers) => {
