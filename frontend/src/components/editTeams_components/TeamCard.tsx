@@ -71,7 +71,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team, onClick }) => {
               <span className="font-semibold underline">Team</span>:{" "}
               <span>{team.name}</span>
             </h3>
-            <div className="flex flex-col mt-10">
+            <div className="flex flex-col mt-1">
               <span>
                 <span className="font-semibold underline">Coach</span>:{" "}
                 <span>{team.coach}</span>

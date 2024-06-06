@@ -172,9 +172,9 @@ const EditTeams = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-zinc-700">
+    <div className="flex items-center justify-center h-auto bg-zinc-700">
       <div className="relative w-4/5 h-full bg-neutral-100 shadow-lg rounded-lg">
-        <Navbar pageIndex={3} />
+        <Navbar pageIndex={2} />
         <div className="p-6">
           <h2 className="text-xl font-semibold mb-3">Edit Teams</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

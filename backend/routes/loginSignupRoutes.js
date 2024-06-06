@@ -12,9 +12,7 @@ import { getGameDetails } from '../controllers/GetGameDetails.js';
 import { EndGame } from '../controllers/EndGame.js';
 import { getPlayerStats } from '../controllers/GetPlayerStats.js';
 import { getLeaderboard } from '../controllers/GetLeaderboard.js';
-import { TeamPhoto } from '../controllers/TeamPhoto.js';
-import parser from '../config/multerConfig.js';
-import { PlayerPhoto } from '../controllers/PlayerPhoto.js';
+import { GetMatchHistory } from '../controllers/GetMatchHistory.js';
 
 const BasicUser = express.Router();
 
@@ -31,6 +29,5 @@ BasicUser.get('/get-game/:gameId', getGameDetails)
 BasicUser.post('/end-match/:gameId', EndGame);
 BasicUser.get('/get-player-stats/:playerId', getPlayerStats);
 BasicUser.get('/leaderboard', getLeaderboard);
-BasicUser.post('/uploadTeamPhoto/:teamId', parser.single('image'), TeamPhoto);
-BasicUser.post('/uploadPlayerPhoto/:playerId', parser.single('image'), PlayerPhoto);
+BasicUser.get('/get-match-history', GetMatchHistory);
 export default BasicUser;

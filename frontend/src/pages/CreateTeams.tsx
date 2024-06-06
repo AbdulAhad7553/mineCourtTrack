@@ -97,6 +97,7 @@ const CreateTeams = () => {
           teamManager = {teamManager}
           setTeamManager = {setTeamManager}
         />
+        <div className='mt-5 mb-5'>*Please select the image and first upload the image. After the image is displayed on your screen, then Create Team.</div>
         <div className="flex justify-center mt-5">
 
         <input
@@ -104,24 +105,31 @@ const CreateTeams = () => {
           accept="image/*"
           onChange={handleImageChange}
         />
-        <button onClick={uploadImage}>Upload Image</button>
-
+        <button className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg" onClick={uploadImage}>Upload Image</button>
 
           {/* Display uploaded image */}
           {imageData && (
+            <div className='ml-10'>
             <Image
+            
               cloudName="dm56xy1oj"
               publicId={imageData.public_id}
               width="300"
+              height="300"
               crop="scale"
             />
+            </div>
           )}
-          <button
-            className="bg-blue-600 hover:bg-blue-800 text-white mb-2 font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
-            onClick={handleCreateTeam}
-          >
-            Create Team
-          </button>
+          
+          <div className="w-full flex justify-center">
+  <button
+    className="block bg-green-600 hover:bg-blue-800 text-white mb-2 font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"
+    onClick={handleCreateTeam}
+  >
+    Create Team
+  </button>
+</div>
+
         </div>
       </div>
     </div>

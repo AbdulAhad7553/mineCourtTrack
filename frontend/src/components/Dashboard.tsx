@@ -23,6 +23,9 @@ const Dashboard = () => {
     navigate('/view-teams');
   };
 
+  const handleMatchHistory = () => {
+    navigate('/get-match-history');
+  };
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="relative w-4/5 h-4/5 bg-neutral-100 shadow-lg rounded-lg">
@@ -35,7 +38,7 @@ const Dashboard = () => {
                 </button>
                 <div className="grid grid-cols-2 gap-4"> {/* Grid layout for buttons */}
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleViewTeams}>View Teams</button>
-                <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">View Match History</button>
+                <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleMatchHistory}>View Match History</button>
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleEditTeams}>Edit Teams</button>
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleViewPlayerStats}>View Player Stats</button>
                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">
