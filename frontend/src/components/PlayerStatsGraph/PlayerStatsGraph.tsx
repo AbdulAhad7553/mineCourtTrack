@@ -1,4 +1,3 @@
-// import React, { useEffect } from 'react';
 // import { Line } from 'react-chartjs-2';
 // import {
 //     Chart as ChartJS,
@@ -25,59 +24,31 @@
 // );
 
 // const PlayerStatsGraph = ({ stats }) => {
-//     const data = {
-//         labels: stats.map(stat => new Date(stat.date)),
+//     const generateChartData = (label, dataKey, borderColor, backgroundColor) => ({
+//         labels: stats.map((stat, index) => `Match ${index + 1} vs ${stat.opponent} on ${new Date(stat.date).toLocaleDateString()}`),
 //         datasets: [
 //             {
-//                 label: 'Points',
-//                 data: stats.map(stat => stat.points),
-//                 borderColor: 'rgba(75, 192, 192, 1)',
-//                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
+//                 label,
+//                 data: stats.map(stat => stat[dataKey]),
+//                 borderColor,
+//                 backgroundColor,
 //                 fill: false,
 //             },
-//             {
-//                 label: 'Assists',
-//                 data: stats.map(stat => stat.assists),
-//                 borderColor: 'rgba(153, 102, 255, 1)',
-//                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
-//                 fill: false,
-//             },
-//             {
-//                 label: 'Rebounds',
-//                 data: stats.map(stat => stat.rebounds),
-//                 borderColor: 'rgba(255, 206, 86, 1)',
-//                 backgroundColor: 'rgba(255, 206, 86, 0.2)',
-//                 fill: false,
-//             },
-//             {
-//                 label: 'Steals',
-//                 data: stats.map(stat => stat.steals),
-//                 borderColor: 'rgba(54, 162, 235, 1)',
-//                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
-//                 fill: false,
-//             },
-//             {
-//                 label: 'Blocks',
-//                 data: stats.map(stat => stat.blocks),
-//                 borderColor: 'rgba(255, 99, 132, 1)',
-//                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
-//                 fill: false,
-//             }
-            
-//             // Add more datasets as needed
 //         ],
-//     };
+//     });
 
 //     const options = {
 //         scales: {
 //             x: {
-//                 type: 'time',
-//                 time: {
-//                     unit: 'month',
-//                 },
+//                 type: 'category',
 //                 title: {
 //                     display: true,
-//                     text: 'Date',
+//                     text: 'Match',
+//                 },
+//                 ticks: {
+//                     autoSkip: false,
+//                     maxRotation: 90,
+//                     minRotation: 90,
 //                 },
 //             },
 //             y: {
@@ -90,18 +61,59 @@
 //         },
 //         plugins: {
 //             legend: {
-//                 position: 'top',
+//                 display: false,
 //             },
 //             title: {
 //                 display: true,
-//                 text: 'Player Stats Over Time',
+//                 text: 'Player Stats Over Matches',
 //             },
 //         },
 //     };
 
+//     const chartsData = [
+//         {
+//             label: 'Points',
+//             dataKey: 'points',
+//             borderColor: 'rgba(75, 192, 192, 1)',
+//             backgroundColor: 'rgba(75, 192, 192, 0.2)',
+//         },
+//         {
+//             label: 'Assists',
+//             dataKey: 'assists',
+//             borderColor: 'rgba(153, 102, 255, 1)',
+//             backgroundColor: 'rgba(153, 102, 255, 0.2)',
+//         },
+//         {
+//             label: 'Rebounds',
+//             dataKey: 'rebounds',
+//             borderColor: 'rgba(255, 206, 86, 1)',
+//             backgroundColor: 'rgba(255, 206, 86, 0.2)',
+//         },
+//         {
+//             label: 'Steals',
+//             dataKey: 'steals',
+//             borderColor: 'rgba(54, 162, 235, 1)',
+//             backgroundColor: 'rgba(54, 162, 235, 0.2)',
+//         },
+//         {
+//             label: 'Blocks',
+//             dataKey: 'blocks',
+//             borderColor: 'rgba(255, 99, 132, 1)',
+//             backgroundColor: 'rgba(255, 99, 132, 0.2)',
+//         },
+//     ];
+
 //     return (
 //         <div>
-//             <Line data={data} options={options} />
+//             {chartsData.map(chart => (
+//                 <div key={chart.label}>
+//                     <h2>{chart.label}</h2>
+//                     <Line
+//                         data={generateChartData(chart.label, chart.dataKey, chart.borderColor, chart.backgroundColor)}
+//                         options={options}
+//                     />
+//                 </div>
+//             ))}
 //         </div>
 //     );
 // };
@@ -110,23 +122,10 @@
 
 
 
-
-
-
-import React from 'react';
 import { Line } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    TimeScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import 'chartjs-adapter-date-fns';
+import { ChartOptions } from 'chart.js';
 
 ChartJS.register(
     CategoryScale,
@@ -139,9 +138,32 @@ ChartJS.register(
     Legend
 );
 
-const PlayerStatsGraph = ({ stats }) => {
-    const generateChartData = (label, dataKey, borderColor, backgroundColor) => ({
-        labels: stats.map((stat, index) => `Match ${index + 1} vs ${stat.opponent} on ${new Date(stat.date).toLocaleDateString()}`),
+interface PlayerStats {
+    opponent: string;
+    date: string;
+    points: number;
+    assists: number;
+    rebounds: number;
+    steals: number;
+    blocks: number;
+}
+
+interface ChartData {
+    label: string;
+    dataKey: keyof PlayerStats;
+    borderColor: string;
+    backgroundColor: string;
+}
+
+interface PlayerStatsGraphProps {
+    stats: PlayerStats[];
+}
+
+const PlayerStatsGraph: React.FC<PlayerStatsGraphProps> = ({ stats }) => {
+    //console.log("Stats: ", stats);
+    const generateChartData = (label: string, dataKey: keyof PlayerStats, borderColor: string, backgroundColor: string) => ({
+        labels: stats.map((stat) => `vs ${stat.opponent} ${new Date(stat.date).toLocaleDateString()}`),
+        
         datasets: [
             {
                 label,
@@ -151,9 +173,13 @@ const PlayerStatsGraph = ({ stats }) => {
                 fill: false,
             },
         ],
-    });
+        
+    }
+    );
 
-    const options = {
+    
+
+    const options: ChartOptions<'line'> = {
         scales: {
             x: {
                 type: 'category',
@@ -185,8 +211,9 @@ const PlayerStatsGraph = ({ stats }) => {
             },
         },
     };
+    
 
-    const chartsData = [
+    const chartsData: ChartData[] = [
         {
             label: 'Points',
             dataKey: 'points',

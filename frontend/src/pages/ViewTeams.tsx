@@ -8,6 +8,10 @@ import Navbar from "../components/navBar_componets/Navbar"; // Import Navbar com
 interface Team {
   _id: string;
   name: string;
+  primaryColor: string;
+  secondaryColor: string;
+  coach: string;
+  teamManager: string;
   teamPhotoURL: string;
   players: Player[];
 }
@@ -15,6 +19,12 @@ interface Team {
 interface Player {
   _id: string;
   name: string;
+  jerseyNumber: number;
+  position: string;
+  age: number;
+  affiliation: string;
+  phoneNumber: string;
+  playerPhotoURL: string;
 }
 
 const ViewTeam: React.FC = () => {
@@ -59,7 +69,7 @@ const ViewTeam: React.FC = () => {
             <h2 className="text-xl font-semibold mb-3">Players</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {selectedTeam.players.map((player) => (
-                <PlayerCard key={player._id} player={player} teamColor={selectedTeam.primaryColor}/>
+                <PlayerCard key={player._id} player={player} teamColor={selectedTeam.primaryColor} isSelected={false} onSelect={()=>""}/>
               ))}
             </div>
           </div>

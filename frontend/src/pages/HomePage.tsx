@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import MovingImage from '../components/utils/MovingImage';
 import Dashboard from '../components/Dashboard';
 

@@ -1,14 +1,35 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config/config";
 import PlayerStatsGraph from "../components/PlayerStatsGraph/PlayerStatsGraph"; // Assume you have a component for displaying graphs
 import Navbar from "../components/navBar_componets/Navbar";
+
+
+interface Player {
+  _id: string;
+  name: string;
+  jerseyNumber: number;
+  position: string;
+  age: number;
+  affiliation: string;
+  phoneNumber: string;
+  playerPhotoURL: string;
+}
+
+interface Team {
+  _id: string;
+  name: string;
+  primaryColor: string;
+  // Define other properties if necessary
+}
+
+
 const ViewPlayerStats = () => {
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<Team []>([]);
   const [selectedTeam, setSelectedTeam] = useState("");
-  const [players, setPlayers] = useState([]);
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player>();
   const [playerStats, setPlayerStats] = useState(null);
 
   const navigate = useNavigate();
@@ -26,7 +47,7 @@ const ViewPlayerStats = () => {
     fetchTeams();
   }, []);
 
-  const handleTeamSelect = async (teamId) => {
+  const handleTeamSelect = async (teamId: string) => {
     setSelectedTeam(teamId);
     try {
       const response = await axios.get(`${API_BASE_URL}/get-players/${teamId}`);
@@ -36,7 +57,7 @@ const ViewPlayerStats = () => {
     }
   };
 
-  const handlePlayerSelect = async (playerId) => {
+  const handlePlayerSelect = async (playerId: string) => {
     const player = players.find((p) => p._id === playerId);
     setSelectedPlayer(player);
     try {

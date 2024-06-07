@@ -1,13 +1,127 @@
-import React, { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+// import styles from "./StatTable.module.css";
+
+// const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
+//   const [tempPlayers, setTempPlayers] = useState(startingFive);
+//   const [substitutesList, setSubstitutesList] = useState(substitutes);
+//   const [playersHistory, setPlayersHistory] = useState([]);
+//   const [substitutesHistory, setSubstitutesHistory] = useState([]);
+//   const [showPopup, setShowPopup] = useState(false);
+//   const [fouledOutPlayer, setFouledOutPlayer] = useState(null);
+
+//   useEffect(() => {
+//     setTempPlayers(startingFive);
+//   }, [startingFive]);
+
+//   useEffect(() => {
+//     setSubstitutesList(substitutes);
+//   }, [substitutes]);
+
+//   const calculateTotalScore = (players) => {
+//     return players.reduce((total, player) => {
+//       return (
+//         total +
+//         (player.stats["1Pts"] || 0) +
+//         2 * (player.stats["2Pts"] || 0) +
+//         3 * (player.stats["3Pts"] || 0)
+//       );
+//     }, 0);
+//   };
+
+//   const updateStat = (playerId, statType) => {
+//     setPlayersHistory((prev) => [...prev, tempPlayers]);
+//     const updatedPlayers = tempPlayers.map((player) => {
+//       if (player.id === playerId) {
+//         const newStats = {
+//           ...player.stats,
+//           [statType]: (player.stats[statType] || 0) + 1,
+//         };
+//         if (newStats.fouls === 5) {
+//           setShowPopup(true);
+//           setFouledOutPlayer(player.id);
+//         }
+//         return {
+//           ...player,
+//           stats: newStats,
+//         };
+//       }
+//       return player;
+//     });
+//     setTempPlayers(updatedPlayers);
+//     updateStats(updatedPlayers);
+//   };
+
+//   const switchPlayer = (selectedPlayerId, playerIdToSwitch) => {
+//     if (fouledOutPlayer === playerIdToSwitch) {
+//       setShowPopup(false);
+//       setFouledOutPlayer(null);
+//     }
+//     setPlayersHistory((prev) => [...prev, tempPlayers]);
+//     setSubstitutesHistory((prev) => [...prev, substitutesList]);
+//     const updatedPlayers = tempPlayers.map((player) => {
+//       if (player.id === playerIdToSwitch) {
+//         const switchedPlayer = substitutesList.find(
+//           (substitute) => substitute.id === selectedPlayerId
+//         );
+//         setSubstitutesList((prevSubstitutes) =>
+//           prevSubstitutes.filter((sub) => sub.id !== selectedPlayerId)
+//         ); // Remove switched player from substitutes
+//         setSubstitutesList((prevSubstitutes) => [...prevSubstitutes, player]); // Add the substituted player back to substitutes
+//         return switchedPlayer;
+//       }
+//       return player;
+//     });
+//     setTempPlayers(updatedPlayers);
+//     updateStats(updatedPlayers);
+//   };
+
+//   const undo = () => {
+//     if (playersHistory.length > 0) {
+//       const previousPlayersState = playersHistory.pop();
+//       setTempPlayers(previousPlayersState);
+//       setPlayersHistory(playersHistory);
+//       updateStats(previousPlayersState);
+//     }
+//     if (substitutesHistory.length > 0) {
+//       const previousSubstitutesState = substitutesHistory.pop();
+//       setSubstitutesList(previousSubstitutesState);
+//       setSubstitutesHistory(substitutesHistory);
+//     }
+//     setShowPopup(false);
+//     setFouledOutPlayer(null);
+//   };
+import { useState, useEffect } from "react";
 import styles from "./StatTable.module.css";
 
-const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
-  const [tempPlayers, setTempPlayers] = useState(startingFive);
-  const [substitutesList, setSubstitutesList] = useState(substitutes);
-  const [playersHistory, setPlayersHistory] = useState([]);
-  const [substitutesHistory, setSubstitutesHistory] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
-  const [fouledOutPlayer, setFouledOutPlayer] = useState(null);
+interface Player {
+  _id: string;
+  id: string;
+  name: string;
+  jerseyNumber: number;
+  position: string;
+  age: number;
+  affiliation: string;
+  phoneNumber: number;
+  playerPhotoURL: string;
+  stats: {
+    [key: string]: number;
+  };
+}
+
+interface StatTableProps {
+  team: string;
+  startingFive: Player[];
+  substitutes: Player[];
+  updateStats: (players: Player[]) => void;
+}
+
+const StatTable = ({ team, startingFive, substitutes, updateStats }: StatTableProps) => {
+  const [tempPlayers, setTempPlayers] = useState<Player[]>(startingFive);
+  const [substitutesList, setSubstitutesList] = useState<Player[]>(substitutes);
+  const [playersHistory, setPlayersHistory] = useState<Player[][]>([]);
+  const [substitutesHistory, setSubstitutesHistory] = useState<Player[][]>([]);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [fouledOutPlayer, setFouledOutPlayer] = useState<string | null>(null);
 
   useEffect(() => {
     setTempPlayers(startingFive);
@@ -17,7 +131,7 @@ const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
     setSubstitutesList(substitutes);
   }, [substitutes]);
 
-  const calculateTotalScore = (players) => {
+  const calculateTotalScore = (players: Player[]): number => {
     return players.reduce((total, player) => {
       return (
         total +
@@ -28,7 +142,7 @@ const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
     }, 0);
   };
 
-  const updateStat = (playerId, statType) => {
+  const updateStat = (playerId: string, statType: string) => {
     setPlayersHistory((prev) => [...prev, tempPlayers]);
     const updatedPlayers = tempPlayers.map((player) => {
       if (player.id === playerId) {
@@ -51,7 +165,7 @@ const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
     updateStats(updatedPlayers);
   };
 
-  const switchPlayer = (selectedPlayerId, playerIdToSwitch) => {
+  const switchPlayer = (selectedPlayerId: string, playerIdToSwitch: string) => {
     if (fouledOutPlayer === playerIdToSwitch) {
       setShowPopup(false);
       setFouledOutPlayer(null);
@@ -65,9 +179,9 @@ const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
         );
         setSubstitutesList((prevSubstitutes) =>
           prevSubstitutes.filter((sub) => sub.id !== selectedPlayerId)
-        ); // Remove switched player from substitutes
-        setSubstitutesList((prevSubstitutes) => [...prevSubstitutes, player]); // Add the substituted player back to substitutes
-        return switchedPlayer;
+        );
+        setSubstitutesList((prevSubstitutes) => [...prevSubstitutes, player]);
+        return switchedPlayer!;
       }
       return player;
     });
@@ -77,13 +191,13 @@ const StatTable = ({ team, startingFive, substitutes, updateStats }) => {
 
   const undo = () => {
     if (playersHistory.length > 0) {
-      const previousPlayersState = playersHistory.pop();
+      const previousPlayersState = playersHistory.pop()!;
       setTempPlayers(previousPlayersState);
       setPlayersHistory(playersHistory);
       updateStats(previousPlayersState);
     }
     if (substitutesHistory.length > 0) {
-      const previousSubstitutesState = substitutesHistory.pop();
+      const previousSubstitutesState = substitutesHistory.pop()!;
       setSubstitutesList(previousSubstitutesState);
       setSubstitutesHistory(substitutesHistory);
     }

@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface MovingImageProps {
     src: string;  // Define the expected type for `src`
 }

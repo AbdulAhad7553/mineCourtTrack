@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import MovingImage from '../components/utils/MovingImage.tsx';
 import axios from 'axios';
@@ -15,13 +15,13 @@ function Signup() {
   const nav = useNavigate();
   sessionStorage.clear();
   
-  const handleConfirmPasswordChange = (e) => {
+  const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const confirmPassword = e.target.value;
     setFormConfirmPassword(confirmPassword);
     setPasswordError(formPassword !== confirmPassword); // Set error state based on password match
   };
 
-  const handelUsernameChange = (e) => {
+  const handelUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const username = e.target.value;
     if(username.length < 8){
       setUsernameError(true);
@@ -32,7 +32,7 @@ function Signup() {
     setFormUsername(username);
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); 
 
     // Check for password mismatch and prevent submission

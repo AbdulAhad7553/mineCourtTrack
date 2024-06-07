@@ -34,7 +34,6 @@ function App() {
         <Route path='/view-teams' element={<ViewTeam/>}/>
         <Route path='/get-match-history' element={<GetMatchHistory/>}/>
         
-
       </Routes>
     </BrowserRouter>
   )

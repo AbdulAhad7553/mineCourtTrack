@@ -15,6 +15,7 @@ interface Team {
   coach: string;
   teamManager: string;
   players: Player[];
+  teamPhotoURL: string;
 }
 
 interface Player {
@@ -25,6 +26,7 @@ interface Player {
   age: number;
   affiliation: string;
   phoneNumber: string;
+  playerPhotoURL: string;
 }
 
 
@@ -85,31 +87,6 @@ const EditTeams = () => {
     setView('edit'); // Reset view to edit when a new team is selected
   };
 
-  // const handleSaveChanges = async () => {
-  //   if (!selectedTeam) return;
-
-  //   try {
-  //     const response = await axios.put(
-  //       `${API_BASE_URL}/updateteam/${selectedTeam._id}`,
-  //       selectedTeam
-  //     );
-  //     if (response.status === 200) {
-  //       alert("Team updated successfully");
-  //       const updatedTeam = response.data;
-  //       setTeams(
-  //         teams.map((team) =>
-  //           team._id === updatedTeam._id ? updatedTeam : team
-  //         )
-  //       );
-  //       setSelectedTeam(updatedTeam);
-  //       window.location.reload();
-  //     } else {
-  //       throw new Error("Error updating team");
-  //     }
-  //   } catch (error) {
-  //     console.error("UpdateTeam Error:", error);
-  //   }
-  // };
 
   const handleSaveChanges = async () => {
     if (!selectedTeam) return;
@@ -142,7 +119,7 @@ const EditTeams = () => {
     }
   };
   
-  const handleAddPlayerClick = (team) => {
+  const handleAddPlayerClick = (team : Team) => {
     navigate('/addplayers', { state: { teamData: team } });
   };
 
@@ -350,7 +327,8 @@ const EditTeams = () => {
                           key={player._id}
                           player={player}
                           teamColor={selectedTeam.primaryColor} // Pass teamColor prop
-                          onClick={() => console.log('Player clicked', player)}
+                          isSelected={false}
+                          onSelect={()=>''}
                         />
                       ))}
                     </div>
@@ -368,8 +346,9 @@ const EditTeams = () => {
                             <PlayerCard
                               player={player}
                               teamColor={selectedTeam.primaryColor} // Pass teamColor prop
-                              onClick={() => console.log('Player clicked', player)}
-                            />
+                              onSelect={()=>''}
+                              isSelected={false}
+                              />
                           </div>
                           <button
                             className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 ml-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 hover:shadow-lg"

@@ -197,7 +197,7 @@ interface PlayerCardProps {
   player: Player;
   teamColor: string;
   isSelected: boolean;
-  onClick: () => void;
+  onSelect: () => void;
 }
 
 const PlayerCard: React.FC<PlayerCardProps> = ({ player, teamColor, isSelected, onSelect }) => {

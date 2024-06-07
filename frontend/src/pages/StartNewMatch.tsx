@@ -1,19 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from "../config/config";
 import PlayerCard from '../components/addTeams_componets/PlayerCard';
 
+interface Player {
+    _id: string;
+    name: string;
+    jerseyNumber: number;
+    position: string;
+    age: number;
+    affiliation: string;
+    phoneNumber: string;
+    playerPhotoURL: string;
+  }
+  
+  interface Team {
+    _id: string;
+    name: string;
+    primaryColor: string;
+    // Define other properties if necessary
+  }
+
 const StartNewMatch = () => {
-    const [teams, setTeams] = useState([]);
+    const [teams, setTeams] = useState<Team []>([]);
     const [homeTeam, setHomeTeam] = useState('');
     const [awayTeam, setAwayTeam] = useState('');
-    const [homePlayers, setHomePlayers] = useState([]);
-    const [awayPlayers, setAwayPlayers] = useState([]);
-    const [homeStartingFive, setHomeStartingFive] = useState([]);
-    const [awayStartingFive, setAwayStartingFive] = useState([]);
-    const [homeSubstitutes, setHomeSubstitutes] = useState([]);
-    const [awaySubstitutes, setAwaySubstitutes] = useState([]);
+    const [homePlayers, setHomePlayers] = useState<Player[]>([]);
+    const [awayPlayers, setAwayPlayers] = useState<Player[]>([]);
+    const [homeStartingFive, setHomeStartingFive] = useState<Player[]>([]);
+    const [awayStartingFive, setAwayStartingFive] = useState<Player[]>([]);
+    const [homeSubstitutes, setHomeSubstitutes] = useState<Player[]>([]);
+    const [awaySubstitutes, setAwaySubstitutes] = useState<Player[]>([]);
     const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
@@ -31,7 +49,7 @@ const StartNewMatch = () => {
         fetchTeams();
     }, []);
 
-    const handleTeamSelect = async (teamId, type) => {
+    const handleTeamSelect = async (teamId: string, type: string) => {
         if (type === 'home') {
             setHomeTeam(teamId);
             try {
@@ -55,7 +73,7 @@ const StartNewMatch = () => {
         }
     };
 
-    const handlePlayerSelect = (player, type) => {
+    const handlePlayerSelect = (player: Player , type: string) => {
         if (type === 'home') {
             if (homeStartingFive.includes(player)) {
                 setHomeStartingFive(homeStartingFive.filter(p => p !== player));
@@ -76,13 +94,13 @@ const StartNewMatch = () => {
         console.log("awayStartingFive: ", awayStartingFive);
     };
 
-    const updateHomeSubstitutes = (startingFive, allPlayers) => {
-        const substitutes = allPlayers.filter(player => !startingFive.includes(player));
+    const updateHomeSubstitutes = (startingFive: Player[], allPlayers: Player[]) => {
+        const substitutes: Player[] = allPlayers.filter(player => !startingFive.includes(player));
         setHomeSubstitutes(substitutes);
     };
 
-    const updateAwaySubstitutes = (startingFive, allPlayers) => {
-        const substitutes = allPlayers.filter(player => !startingFive.includes(player));
+    const updateAwaySubstitutes = (startingFive: Player[], allPlayers: Player[]) => {
+        const substitutes: Player[] = allPlayers.filter(player => !startingFive.includes(player));
         setAwaySubstitutes(substitutes);
     };
 

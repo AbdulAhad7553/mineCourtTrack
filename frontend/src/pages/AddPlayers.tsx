@@ -221,19 +221,29 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useState, useEffect } from "react";
-import store from "../redux/store";
-//import * as actionTypes from "../redux/actionTypes";
 import PlayerCard from "../components/addTeams_componets/PlayerCard";
 import { API_BASE_URL } from "../config/config";
 import { Image } from "cloudinary-react"; // Add Image import
 
+interface Player {
+  id:string;
+  _id:string;
+  name: string;
+  jerseyNumber: number;
+  position: string;
+  age: number;
+  affiliation: string;
+  phoneNumber: string;
+  teamId: string;
+  playerPhotoURL: string;
+}
+
 function AddPlayers() {
   const location = useLocation();
   const { teamData } = location.state;
-  console.log("AddPlayers.tsx mein teamData jo pass ho raha hai:  ", teamData);
   const { _id: teamId, name: teamName, primaryColor } = teamData;
 
-  const [playerList, setPlayerList] = useState([]);
+  const [playerList, setPlayerList] = useState<Player[]>([]);
   const [toggleAdd, setToggleAdd] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -245,8 +255,8 @@ function AddPlayers() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const navigate = useNavigate();
 
-  const [playerImage, setPlayerImage] = useState<File>(); // Add state for player image
-  const [imageData, setImageData] = useState<any>(null); // Add state for image data
+  const [playerImage, setPlayerImage] = useState<File>();
+  const [imageData, setImageData] = useState<any>(null);
 
   const playerPositions = [
     "Point Guard (PG)",
@@ -261,7 +271,6 @@ function AddPlayers() {
       try {
         const response = await axios.get(`${API_BASE_URL}/get-players/${teamId}`);
         if (response.status === 200) {
-          console.log("Response from get PLayers: ", response)
           setPlayerList(response.data.players);
         } else {
           console.error("Failed to fetch players");
@@ -273,12 +282,12 @@ function AddPlayers() {
 
     fetchExistingPlayers();
 
-    const unsubscribe = store.subscribe(() => {
-      setPlayerList(store.getState());
-    });
+    // const unsubscribe = store.subscribe(() => {
+    //   setPlayerList(store.getState());
+    // });
 
-    return unsubscribe;
-  }, [teamId]);
+  //   return unsubscribe;
+   }, [teamId]);
 
   const handleToggleAdd = () => {
     setToggleAdd(!toggleAdd);
@@ -298,7 +307,7 @@ function AddPlayers() {
   const uploadImage = () => {
     const formData = new FormData();
     formData.append("file", playerImage as File);
-    formData.append("upload_preset", "vt1zjl7d"); // Replace with your Cloudinary upload preset
+    formData.append("upload_preset", "vt1zjl7d");
 
     const postImage = async () => {
       try {
@@ -318,15 +327,17 @@ function AddPlayers() {
   const handleAddPlayer = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const newPlayer = {
+    const newPlayer: Player = {
+      id:'',
+      _id:'',
       name,
-      jerseyNumber,
+      jerseyNumber: parseInt(jerseyNumber),
       position,
-      age,
+      age: parseInt(age),
       affiliation: `${affiliation}, ${teamName}`,
       phoneNumber,
       teamId,
-      playerPhotoURL: imageData?.public_id // Include the player photo URL
+      playerPhotoURL: imageData?.public_id || "" // Include the player photo URL
     };
 
     try {
@@ -356,7 +367,6 @@ function AddPlayers() {
       setErrorMessage("Failed to add player. Please try again.");
     }
   };
-
   return (
     <div className="relative items-center justify-center h-screen">
       <div className="flex w-full mx-auto bg-neutral-100 rounded-lg overflow-hidden">
@@ -365,6 +375,8 @@ function AddPlayers() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {playerList.map((player) => (
               <PlayerCard
+                isSelected = {false}
+                onSelect={()=>''}
                 key={player.id}
                 player={player}
                 teamColor={primaryColor}

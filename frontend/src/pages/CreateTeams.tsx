@@ -15,7 +15,7 @@ const CreateTeams = () => {
   const [secondaryColor, setSecondaryColor] = useState('#000000');
   const [coach, setCoach] = useState("");
   const [teamManager, setTeamManager] = useState("");
-  const [teamId, setTeamId] = useState(null);
+  //const [teamId, setTeamId] = useState(null);
   const navigate = useNavigate();
   const [teamImage, setTeamImage] = useState<File>();
   const [imageData, setImageData] = useState<any>(null);
@@ -24,7 +24,7 @@ const CreateTeams = () => {
 
   const uploadImage = () => {
     const formData = new FormData()
-    formData.append("file", teamImage);
+    formData.append("file", teamImage as Blob);
     formData.append("upload_preset", "vt1zjl7d")
     // Replace YOUR_UPLOAD_PRESET with your cloudinary upload_preset which looks something like this: sdfmpeitro
 
@@ -71,7 +71,7 @@ const CreateTeams = () => {
         alert("Team created successfully");
         const teamData = response.data.teamData;
         console.log("teamData jo backend se mangwaya hai :  ", teamData);
-        setTeamId(response.data._id); // Save the team ID
+        //setTeamId(response.data._id); // Save the team ID
         navigate('/addplayers', { state: {teamData}});
       } else {
         throw new Error("Error creating team");
@@ -115,7 +115,6 @@ const CreateTeams = () => {
               cloudName="dm56xy1oj"
               publicId={imageData.public_id}
               width="300"
-              height="300"
               crop="scale"
             />
             </div>
