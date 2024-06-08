@@ -73,7 +73,7 @@ export const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: 'https://mine-court-track.vercel.app', // Your frontend URL
+  origin: '*', // Your frontend URL
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

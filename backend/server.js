@@ -86,7 +86,7 @@ const server = http.createServer(app);
 // Setup Socket.IO server
 const io = new Server(server, {
   cors: {
-    origin: "https://mine-court-track.vercel.app", // Your frontend URL
+    origin: "*", // Your frontend URL
     methods: ["GET", "POST", "OPTIONS"],
   },
 });
