@@ -1,49 +1,3 @@
-
-// import express from "express";
-// import cors from "cors";
-// import mongoose from "mongoose";
-// import 'dotenv/config';
-
-// // MongoDB Connection
-// const mongoURI = process.env.MONGO_URL;
-// mongoose.connect(mongoURI)
-//   .then(async () => {
-//     console.log('MongoDB connected successfully');
-    
-//     // Ensure Player indexes are synchronized
-//     try {
-//       const Player = (await import('./models/player.js')).default; // Import Player model dynamically
-//       await Player.syncIndexes();
-//       console.log('Player indexes synchronized successfully');
-//     } catch (err) {
-//       console.error('Error synchronizing Player indexes:', err);
-//     }
-    
-//     // The server will be started in server.js
-//   })
-//   .catch(err => console.error('MongoDB connection error:', err));
-
-// // Create Express app
-// export const app = express();
-
-// // Middleware
-// app.use(cors());
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-// // Routes
-// import BasicUser from './routes/loginSignupRoutes.js';
-// app.use(BasicUser);
-
-
-
-
-
-
-
-
-
-
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -51,7 +5,7 @@ import 'dotenv/config';
 
 // MongoDB Connection
 const mongoURI = process.env.MONGO_URL;
-mongoose.connect(mongoURI)
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(async () => {
     console.log('MongoDB connected successfully');
     
@@ -64,23 +18,24 @@ mongoose.connect(mongoURI)
       console.error('Error synchronizing Player indexes:', err);
     }
     
-    // The server will be started in server.js
   })
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit process with failure
+  });
 
 // Create Express app
-export const app = express();
+const app = express();
 
 // Middleware
 const corsOptions = {
   origin: '*', // Your frontend URL
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  credentials: true
 };
 
 app.use(cors(corsOptions));
-
 app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -88,3 +43,11 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 import BasicUser from './routes/loginSignupRoutes.js';
 app.use(BasicUser);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// Export the app as default
+export default app;

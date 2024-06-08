@@ -87,7 +87,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*", // Your frontend URL
-    methods: ["GET", "POST", "OPTIONS"],
+    methods:["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   },
 });
 
