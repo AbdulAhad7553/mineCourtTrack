@@ -13,6 +13,7 @@ import { EndGame } from '../controllers/EndGame.js';
 import { getPlayerStats } from '../controllers/GetPlayerStats.js';
 import { getLeaderboard } from '../controllers/GetLeaderboard.js';
 import { GetMatchHistory } from '../controllers/GetMatchHistory.js';
+import { DeleteTeam } from '../controllers/DeleteTeam.js';
 
 const BasicUser = express.Router();
 
@@ -30,4 +31,5 @@ BasicUser.post('/end-match/:gameId', EndGame);
 BasicUser.get('/get-player-stats/:playerId', getPlayerStats);
 BasicUser.get('/leaderboard', getLeaderboard);
 BasicUser.get('/get-match-history', GetMatchHistory);
+BasicUser.delete('/delete-team/:teamId', DeleteTeam);
 export default BasicUser;

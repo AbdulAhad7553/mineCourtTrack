@@ -26,6 +26,10 @@ const Dashboard = () => {
   const handleMatchHistory = () => {
     navigate('/get-match-history');
   };
+
+  const handleDeleteTeam = () => {
+    navigate('/remove-teams');
+  };
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="relative w-4/5 h-4/5 bg-neutral-100 shadow-lg rounded-lg">
@@ -46,7 +50,7 @@ const Dashboard = () => {
                         Add Teams
                     </Link>
                 </button>
-                <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">View Team Stats</button>
+                <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleDeleteTeam}>Remove Teams</button>
                 
                 </div>
             </div>

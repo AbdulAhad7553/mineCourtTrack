@@ -73,7 +73,7 @@
 
 import { Server } from "socket.io";
 import http from "http";
-import { app } from "./app.js";
+import app  from "./app.js";
 import { config } from "dotenv";
 
 config({
