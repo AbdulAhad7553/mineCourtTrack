@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../config/config";
 import Navbar from "../components/navBar_componets/Navbar";
@@ -30,8 +29,7 @@ interface Player {
 const RemoveTeams = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
     const fetchTeams = async () => {
       try {
