@@ -324,9 +324,52 @@ function AddPlayers() {
     postImage();
   };
 
+  // const handleAddPlayer = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+
+  //   const newPlayer: Player = {
+  //     id:'',
+  //     _id:'',
+  //     name,
+  //     jerseyNumber: parseInt(jerseyNumber),
+  //     position,
+  //     age: parseInt(age),
+  //     affiliation: `${affiliation}, ${teamName}`,
+  //     phoneNumber,
+  //     teamId,
+  //     playerPhotoURL: imageData?.public_id || "" // Include the player photo URL
+  //   };
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${API_BASE_URL}/addplayer-req`,
+  //       newPlayer
+  //     );
+  //     if (response.status >= 200 && response.status < 300) {
+  //       alert("Player Added to database and the team");
+  //       window.location.reload();
+
+  //       handleToggleAdd();
+  //       setName("");
+  //       setJerseyNumber("");
+  //       setPosition("");
+  //       setAge("");
+  //       setAffiliation("");
+  //       setPhoneNumber("");
+  //       setErrorMessage("");
+  //     } else {
+  //       throw new Error(
+  //         "Server responded with non-success status for addplayer request"
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("AddPlayer Error:", error);
+  //     setErrorMessage("Failed to add player. Please try again.");
+  //   }
+  // };
   const handleAddPlayer = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     const newPlayer: Player = {
       id:'',
       _id:'',
@@ -339,7 +382,7 @@ function AddPlayers() {
       teamId,
       playerPhotoURL: imageData?.public_id || "" // Include the player photo URL
     };
-
+  
     try {
       const response = await axios.post(
         `${API_BASE_URL}/addplayer-req`,
@@ -347,8 +390,10 @@ function AddPlayers() {
       );
       if (response.status >= 200 && response.status < 300) {
         alert("Player Added to database and the team");
-        window.location.reload();
-
+  
+        // Update playerList state with the newly added player
+        setPlayerList(prevPlayerList => [...prevPlayerList, newPlayer]);
+  
         handleToggleAdd();
         setName("");
         setJerseyNumber("");
