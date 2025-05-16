@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/config";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import LoadingLayout from "../components/LoadingLayout";
 
 interface Player {
   _id: string;
@@ -61,6 +62,10 @@ const Leaderboard: React.FC = () => {
   );
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  // ✅ Return loading layout while data is loading
+  if (!leaderboard) {
+    return <LoadingLayout />;
+  }
 
   return (
     <>

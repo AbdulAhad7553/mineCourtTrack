@@ -10,7 +10,8 @@ const gameStatSchema = new mongoose.Schema({
     blocks: { type: Number, default: 0 },
     rebounds: { type: Number, default: 0 },
     steals: { type: Number, default: 0 },
-    fouls: { type: Number, default: 0 }
+    fouls: { type: Number, default: 0 },
+    isActive: {type: Boolean, default: true}
 });
 
 // Middleware to populate playerName before saving
