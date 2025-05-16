@@ -17,6 +17,10 @@ import Leaderboard from './pages/Leaderboard.tsx';
 import ViewTeam from './pages/ViewTeams.tsx';
 import GetMatchHistory from './pages/GetMatchHistory.tsx';
 import RemoveTeams from './pages/RemoveTeams.tsx';
+import EditTeam from './pages/EditTeam.tsx';
+import ViewMatch from './pages/ViewMatch.tsx';
+
+
 function App() {
 
   return (
@@ -28,6 +32,7 @@ function App() {
         <Route path="/create-team" element={<CreateTeams/>}/>
         <Route path="/addplayers" element={<AddPlayers/>}/>
         <Route path="/edit-teams" element={<EditTeams/>}/>
+        <Route path="/edit-team/:teamId" element={<EditTeam/>}/>
         <Route path="/start-new-match" element={<StartNewMatch/>}/>
         <Route path='/match/:gameId' element={<MatchStats/>}/>
         <Route path='/view-player-stats' element={<ViewPlayerStats/>}/>
@@ -35,7 +40,7 @@ function App() {
         <Route path='/view-teams' element={<ViewTeam/>}/>
         <Route path='/get-match-history' element={<GetMatchHistory/>}/>
         <Route path='/remove-teams/' element={<RemoveTeams/>}/>
-        
+        <Route path='/view-match/:matchId' element={<ViewMatch/>}/>
       </Routes>
     </BrowserRouter>
   )

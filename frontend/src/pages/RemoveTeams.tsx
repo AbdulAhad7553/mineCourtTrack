@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../config/config";
-import Navbar from "../components/navBar_componets/Navbar";
+import Navbar from "../components/Navbar";
 import TeamCard from "../components/editTeams_components/TeamCard";
-
+import Sidebar from "../components/Sidebar";
 interface Team {
   _id: string;
   name: string;
@@ -70,7 +70,8 @@ const RemoveTeams = () => {
   return (
     <div className="flex items-center justify-center h-auto bg-zinc-700">
       <div className="relative w-4/5 h-full bg-neutral-100 shadow-lg rounded-lg">
-        <Navbar pageIndex={3} />
+        <Navbar />
+        <Sidebar />
         <div className="p-6">
           <h2 className="text-xl font-semibold mb-3">Remove Teams</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

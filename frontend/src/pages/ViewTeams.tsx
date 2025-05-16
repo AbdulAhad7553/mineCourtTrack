@@ -3,8 +3,8 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/config";
 import TeamCard from "../components/editTeams_components/TeamCard";
 import PlayerCard from "../components/addTeams_componets/PlayerCard";
-import Navbar from "../components/navBar_componets/Navbar"; // Import Navbar component
-
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 interface Team {
   _id: string;
   name: string;
@@ -52,7 +52,8 @@ const ViewTeam: React.FC = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Navbar component */}
-      <Navbar pageIndex={2} />
+      <Navbar />
+      <Sidebar />
       
       <div className="container mx-auto pt-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

@@ -14,7 +14,13 @@ import { getPlayerStats } from '../controllers/GetPlayerStats.js';
 import { getLeaderboard } from '../controllers/GetLeaderboard.js';
 import { GetMatchHistory } from '../controllers/GetMatchHistory.js';
 import { DeleteTeam } from '../controllers/DeleteTeam.js';
-
+import { deleteGame } from '../controllers/DeleteGame.js';
+import { GetTeamDetail } from '../controllers/GetTeamDetail.js';
+import { GetMostRecentGame } from '../controllers/GetMostRecentGame.js';
+import { GetTeamsCount } from '../controllers/GetTeamsCount.js';
+import { GetPlayersCount } from '../controllers/GetPlayersCount.js';
+import { UpdatePlayer } from '../controllers/UpdatePlayer.js';
+import { getGameStats } from '../controllers/GetGameStats.js';
 const BasicUser = express.Router();
 
 BasicUser.post('/login-req', login);
@@ -23,7 +29,7 @@ BasicUser.post('/addplayer-req', AddPlayer);
 BasicUser.post('/addteam-req', AddTeam);
 BasicUser.get('/get-teams', GetTeams);
 BasicUser.put('/updateteam/:id', UpdateTeam);
-BasicUser.put('/remove-player/:teamId/:playerId', RemovePlayer);
+BasicUser.delete('/remove-player/:teamId/:playerId', RemovePlayer);
 BasicUser.get('/get-players/:teamId', GetPlayers);
 BasicUser.post('/newgame', createNewGame);
 BasicUser.get('/get-game/:gameId', getGameDetails)
@@ -32,4 +38,11 @@ BasicUser.get('/get-player-stats/:playerId', getPlayerStats);
 BasicUser.get('/leaderboard', getLeaderboard);
 BasicUser.get('/get-match-history', GetMatchHistory);
 BasicUser.delete('/delete-team/:teamId', DeleteTeam);
+BasicUser.delete('/delete-match/:gameId', deleteGame);
+BasicUser.get('/get-team-detail/:teamId', GetTeamDetail);
+BasicUser.get('/most-recent-game', GetMostRecentGame);
+BasicUser.get('/teams-count', GetTeamsCount);
+BasicUser.get('/players-count', GetPlayersCount);
+BasicUser.put('/update-player/:teamId/:playerId', UpdatePlayer);
+BasicUser.get('/get-game-stats/:gameId', getGameStats);
 export default BasicUser;

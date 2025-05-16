@@ -4,7 +4,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import axios from "axios";
-import Navbar from "../components/navBar_componets/Navbar";
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 import EnterTeamDetail from "../components/addTeams_componets/EnterTeamDetail";
 import { API_BASE_URL } from "../config/config";
 import { Image } from "cloudinary-react"
@@ -84,7 +85,8 @@ const CreateTeams = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-zinc-700">
       <div className="relative w-4/5 h-full bg-neutral-100 shadow-lg rounded-lg">
-        <Navbar pageIndex={2}/>
+        <Navbar/>
+        <Sidebar/>
         <EnterTeamDetail 
           teamName={teamName}
           setTeamName={setTeamName}

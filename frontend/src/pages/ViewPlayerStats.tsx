@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config/config";
 import PlayerStatsGraph from "../components/PlayerStatsGraph/PlayerStatsGraph"; // Assume you have a component for displaying graphs
-import Navbar from "../components/navBar_componets/Navbar";
-
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 interface Player {
   _id: string;
@@ -24,9 +24,8 @@ interface Team {
   // Define other properties if necessary
 }
 
-
 const ViewPlayerStats = () => {
-  const [teams, setTeams] = useState<Team []>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   const [selectedTeam, setSelectedTeam] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayer, setSelectedPlayer] = useState<Player>();
@@ -72,9 +71,11 @@ const ViewPlayerStats = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <Navbar pageIndex={2} />
-      <div className="flex flex-col items-center justify-center h-auto bg-gray-100 p-4">
+    <>
+      <div className="w-screen h-screen fixed right-0 top-0 overflow-hidden"></div>
+      <Navbar />
+      <Sidebar />
+      <div className="flex flex-col items-center relative mt-20 justify-center h-auto p-4">
         <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">View Player Stats</h2>
           <button
@@ -127,7 +128,7 @@ const ViewPlayerStats = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

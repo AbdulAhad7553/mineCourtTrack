@@ -14,6 +14,39 @@ export default {
       },
     },
   },
+  theme: {
+    extend: {
+      colors: {
+        'custom-gray': '#D3D9D4',
+        'custom-blue': '#233F6B',
+      },
+    },
+  },
+  variants: {},
+
+  theme: {
+    extend: {
+      width: {
+        '570': '570px',
+        '136': '136px',
+        '52':'52px',
+      },
+      height: {
+        '300': '300px',
+        '136':'136px',
+        '70': '70px',
+      },
+    },
+  },
+
+  theme: {
+    extend: {
+      colors: {
+        customBlue: '#2E3944',
+      },
+    },
+  },
+  variants: {},
   plugins: [],
   
 }
