@@ -2,7 +2,6 @@ import Game from "../models/game.js";
 import GameStat from "../models/gamestat.js";
 import Player from "../models/player.js";
 
-
 export const createNewGame = async (req, res) => {
   try {
     const {
@@ -49,10 +48,11 @@ export const deleteGame = async (req, res) => {
     }
 
     // Delete associated game stats
-    await GameStat.deleteMany({ gameId: gameId });
+    await GameStat.updateMany({ gameId: gameId }, { isActive: false });
 
-    // Delete the game
-    await Game.findByIdAndDelete(gameId);
+    // Soft delete: Set isActive to false (or 0)
+    game.isActive = false;
+    await game.save();
 
     res
       .status(200)
@@ -76,7 +76,7 @@ export const EndGame = async (req, res) => {
   } = req.body;
 
   try {
-    const game = await Game.findById(gameId);
+    const game = await Game.findOne({ _id: gameId, isActive: true });
 
     if (!game) {
       return res.status(404).send({ error: "Game not found" });
@@ -93,7 +93,10 @@ export const EndGame = async (req, res) => {
     // Save player stats
     const savePlayerStats = async (team) => {
       const statsPromises = team.map(async (player) => {
-        const playerObj = await Player.findOne({ _id: player.id });
+        const playerObj = await Player.findOne({
+          _id: player.id,
+          isActive: true,
+        });
 
         if (!playerObj) {
           throw new Error(`Player not found: ${player.id}`);
@@ -148,7 +151,7 @@ export const getGameDetails = async (req, res) => {
   try {
     const { gameId } = req.params;
 
-    const game = await Game.findById(gameId)
+    const game = await Game.findOne({ _id: gameId, isActive: true })
       .populate({
         path: "playerStats",
         populate: {
@@ -163,8 +166,8 @@ export const getGameDetails = async (req, res) => {
       return res.status(404).json({ message: "Game not found" });
     }
 
-    const homeTeamPlayers = await Player.find({ teamId: game.homeTeamId._id });
-    const awayTeamPlayers = await Player.find({ teamId: game.awayTeamId._id });
+    const homeTeamPlayers = await Player.find({ teamId: game.homeTeamId._id, isActive: true });
+    const awayTeamPlayers = await Player.find({ teamId: game.awayTeamId._id, isActive: true });
     const homeTeamName = game.homeTeamId.name;
     const awayTeamName = game.awayTeamId.name;
     const homeTeamId = game.homeTeamId._id;
@@ -173,7 +176,6 @@ export const getGameDetails = async (req, res) => {
     const awayTeamScore = game.awayTeamScore;
     const date = game.date;
 
-    //console.log("homeTeamPlayers: ", homeTeamPlayers);
     res.status(200).json({
       homeTeamPlayers,
       awayTeamPlayers,
@@ -197,7 +199,7 @@ export const getGameStats = async (req, res) => {
     const { gameId } = req.params;
 
     // Find the game and populate necessary fields
-    const game = await Game.findById(gameId)
+    const game = await Game.findOne({ _id: gameId, isActive: true })
       .populate("homeTeamId")
       .populate("awayTeamId");
 
@@ -206,7 +208,7 @@ export const getGameStats = async (req, res) => {
     }
 
     // Fetch all game statistics for this game
-    const gameStats = await GameStat.find({ gameId }).populate({
+    const gameStats = await GameStat.find({ gameId: gameId, isActive: true }).populate({
       path: "playerId",
       select: "name jerseyNumber teamId", // Select only needed fields
     });
@@ -273,7 +275,7 @@ export const GetMatchHistory = async (req, res) => {
   try {
     console.log("Get Match History request --- received.");
 
-    const games = await Game.find();
+    const games = await Game.find({ isActive: true });
     //console.log("games being sent to frontend: ", games);
     res.status(200).json({ games });
   } catch (error) {
@@ -288,7 +290,7 @@ export const GetMostRecentGame = async (req, res) => {
   console.log("GetMostRecentGame --- request received");
 
   try {
-    const mostRecentGame = await Game.findOne().sort({ date: -1 });
+    const mostRecentGame = await Game.findOne({ isActive: true }).sort({ date: -1 });
     res.json(mostRecentGame);
   } catch (error) {
     res.status(500).json({ message: "Error fetching the most recent game" });

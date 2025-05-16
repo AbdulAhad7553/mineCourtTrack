@@ -9,7 +9,7 @@ export const AddPlayer = async(req,res)=> {
         const {name, jerseyNumber, position, age, affiliation, phoneNumber, teamId, playerPhotoURL} = req.body;
 
         // Find the team by its teamId
-        const team = await Team.findById(teamId);
+        const team = await Team.findOne({ _id: teamId, isActive: true });
         if (!team) {
             return res.status(404).json({ message: "Team not found" });
         }
@@ -59,7 +59,7 @@ export const RemovePlayer = async (req, res) => {
   
     try {
       // Find the team and remove the player reference
-      const team = await Team.findById(teamId);
+      const team = await Team.findOne({ _id: teamId, isActive: true });
       if (!team) {
         return res.status(404).json({ message: 'Team not found' });
       }
@@ -67,12 +67,9 @@ export const RemovePlayer = async (req, res) => {
       team.players = team.players.filter(player => player.toString() !== playerId);
       await team.save();
   
-      // Remove all game stats related to the player
-     // await GameStat.deleteMany({ playerId });
-  
       // Remove the player from the Player collection
-      const result = await Player.deleteOne({ _id: playerId });
-      if (result.deletedCount === 0) {
+      const result = await Player.updateOne({ _id: playerId }, { isActive: false });
+      if (!result) {
         return res.status(404).json({ message: 'Player not found' });
       }
   
@@ -89,7 +86,7 @@ export const GetPlayers = async (req,res) => {
     const { teamId } = req.params;
     console.log("Get Players request -- received for teamId:", teamId);
     try {
-        const players = await Player.find({ teamId });
+        const players = await Player.find({ teamId, isActive: true });
         res.status(200).json({ players });
         
     } catch(error) {
@@ -114,7 +111,10 @@ export const getPlayerStats = async (req, res) => {
 
     try {
         // Fetch player details
-        const player = await Player.findById(playerId).populate('gameStats');
+        const player = await Player.findOne({ _id: playerId, isActive: true }).populate({
+            path: 'gameStats',
+            match: { isActive: true }
+          });
         if (!player) {
             return res.status(404).json({ message: 'Player not found' });
         }
@@ -123,13 +123,29 @@ export const getPlayerStats = async (req, res) => {
         const playerTeamId = player.teamId;
 
         // Populate game details for each gameStat
-        const statsWithGames = await GameStat.find({ playerId }).populate('gameId');
+        const statsWithGames = await GameStat.find({
+            playerId,
+            isActive: true
+          }).populate({
+            path: 'gameId',
+            match: { isActive: true }
+          });
 
         // Format stats with game dates and opponent
         const formattedStats = await Promise.all(statsWithGames.map(async stat => {
-            const game = await Game.findById(stat.gameId).populate(['homeTeamId', 'awayTeamId']);
+            const game = await Game.findOne({ _id: stat.gameId, isActive: true }).populate([
+                {
+                  path: 'homeTeamId',
+                  match: { isActive: true },
+                },
+                {
+                  path: 'awayTeamId',
+                  match: { isActive: true },
+                },
+              ]);
             const opponentTeamId = game.homeTeamId.equals(playerTeamId) ? game.awayTeamId : game.homeTeamId;
-            const opponentTeam = await Team.findById(opponentTeamId);
+            const opponentTeam = await Team.findOne({ _id: opponentTeamId, isActive: true });
+
 
             return {
                 date: stat.gameId.date,
@@ -157,13 +173,13 @@ export const UpdatePlayer = async (req, res) => {
 
     try {
         // First check if the team exists
-        const team = await Team.findById(teamId);
+        const team = await Team.findOne({ _id: teamId, isActive: true });
         if (!team) {
             return res.status(404).json({ message: "Team not found" });
         }
 
         // Check if the player exists and belongs to the team
-        const player = await Player.findOne({ _id: playerId, teamId: teamId });
+        const player = await Player.findOne({ _id: playerId, teamId: teamId, isActive: true });
         if (!player) {
             return res.status(404).json({ message: "Player not found or does not belong to this team" });
         }
@@ -173,7 +189,8 @@ export const UpdatePlayer = async (req, res) => {
             const existingPlayer = await Player.findOne({
                 teamId: teamId,
                 jerseyNumber: updatedPlayerData.jerseyNumber,
-                _id: { $ne: playerId } // Exclude current player from check
+                _id: { $ne: playerId }, // Exclude current player from check
+                isActive: true
             });
 
             if (existingPlayer) {

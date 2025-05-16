@@ -49,7 +49,7 @@ export const DeleteTeam = async (req, res) => {
 
   try {
     // Find the team by ID
-    const team = await Team.findById(teamId);
+    const team = await Team.findOne({ _id: teamId, isActive: true });
 
     if (!team) {
       return res.status(404).json({ message: "Team not found" });
@@ -58,6 +58,7 @@ export const DeleteTeam = async (req, res) => {
     // Find all games where the team participated either as home team or away team
     const games = await Game.find({
       $or: [{ homeTeamId: teamId }, { awayTeamId: teamId }],
+      isActive: true
     });
 
     // Loop through each game to delete game stats of players from the other team
@@ -68,21 +69,27 @@ export const DeleteTeam = async (req, res) => {
         : game.homeTeamId;
 
       // Find all players in the opposing team
-      const opposingTeamPlayers = await Player.find({ teamId: opposingTeamId });
+      const opposingTeamPlayers = await Player.find({ teamId: opposingTeamId, isActive: true });
 
       // Delete game stats for each player of the opposing team related to this game
       for (let player of opposingTeamPlayers) {
-        await GameStat.deleteOne({ playerId: player._id, gameId: game._id });
+        await GameStat.updateOne(
+          { playerId: player._id, gameId: game._id },
+          { isActive: false }
+        );
       }
     }
 
     // Delete all games where the team participated as either home team or away team
-    await Game.deleteMany({
-      $or: [{ homeTeamId: teamId }, { awayTeamId: teamId }],
-    });
+    await Game.updateMany(
+      {
+        $or: [{ homeTeamId: teamId }, { awayTeamId: teamId }],
+      },
+      { isActive: false }
+    );
 
     // Find all players in the team
-    const players = await Player.find({ teamId: teamId });
+    const players = await Player.find({ teamId: teamId, isActive: true });
 
     // Delete all game stats for each player related to matches against the deleted team
     for (let player of players) {
@@ -97,15 +104,21 @@ export const DeleteTeam = async (req, res) => {
 
       // Delete game stats related to matches against the deleted team
       for (let stat of gameStatsToDelete) {
-        await GameStat.deleteOne({ _id: stat._id });
+        await GameStat.updateOne(
+          { _id: stat._id },
+          { isActive: false }
+        );
       }
     }
 
     // Delete all players in the team
-    await Player.deleteMany({ teamId: teamId });
+    await Player.updateMany(
+      { teamId: teamId },
+      { isActive: false }
+    );
 
     // Finally, delete the team itself
-    await Team.findByIdAndDelete(teamId);
+    await Team.findByIdAndUpdate(teamId, { isActive: false });
 
     res
       .status(200)
@@ -162,7 +175,10 @@ export const GetTeams = async (req, res) => {
   console.log("Get Teams request -- received");
 
   try {
-    const teams = await Team.find().populate("players");
+    const teams = await Team.find({ isActive: true }).populate({
+      path: "players",
+      match: { isActive: true },
+    });
     res.status(200).json({ teams });
   } catch (error) {
     console.error("Error fetching teams:", error);
@@ -177,7 +193,7 @@ export const GetTeamDetail = async (req, res) => {
 
   const { teamId } = req.params;
   try {
-    const team = await Team.findById(teamId);
+    const team = await Team.findOne({ _id: teamId, isActive: true });
     if (!team) {
       return res.status(404).json({ message: "Team not found" });
     }
@@ -190,7 +206,7 @@ export const GetTeamDetail = async (req, res) => {
 export const GetTeamsCount = async (req, res) => {
   console.log("GetTeamsCount request  --- received");
   try {
-    const teamCount = await Team.countDocuments();
+    const teamCount = await Team.countDocuments({ isActive: true });
     res.json({ count: teamCount });
   } catch (error) {
     res.status(500).json({ message: "Error fetching the team count" });
