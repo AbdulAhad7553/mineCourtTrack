@@ -32,7 +32,7 @@ function App() {
         <Route path="/create-team" element={<CreateTeams/>}/>
         <Route path="/addplayers" element={<AddPlayers/>}/>
         <Route path="/edit-teams" element={<EditTeams/>}/>
-        <Route path="/edit-team/:teamId" element={<EditTeam/>}/>
+        <Route path="/edit-team/:id" element={<EditTeam/>}/>
         <Route path="/start-new-match" element={<StartNewMatch/>}/>
         <Route path='/match/:gameId' element={<MatchStats/>}/>
         <Route path='/view-player-stats' element={<ViewPlayerStats/>}/>
