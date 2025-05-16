@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { API_BASE_URL } from "../config/config";
+import LoadingLayout from "../components/LoadingLayout";
 
 interface Player {
   _id: string;
@@ -161,13 +162,7 @@ const ViewMatch: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen">
-        <Navbar />
-        <Sidebar />
-        <div className="p-4 sm:ml-64 mt-14 flex-grow flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
+      <LoadingLayout />
     );
   }
 

@@ -1,26 +1,9 @@
 import express from 'express';
-import { login } from '../controllers/Login.js'
-import { signup } from '../controllers/Signup.js';
-import { AddPlayer } from '../controllers/AddPlayer.js';
-import { AddTeam } from '../controllers/AddTeam.js';
-import { GetTeams } from '../controllers/GetTeams.js';
-import { UpdateTeam } from '../controllers/UpdateTeam.js';
-import { RemovePlayer } from '../controllers/RemovePlayer.js';
-import { GetPlayers } from '../controllers/GetPlayers.js';
-import { createNewGame } from '../controllers/NewGame.js';
-import { getGameDetails } from '../controllers/GetGameDetails.js';
-import { EndGame } from '../controllers/EndGame.js';
-import { getPlayerStats } from '../controllers/GetPlayerStats.js';
-import { getLeaderboard } from '../controllers/GetLeaderboard.js';
-import { GetMatchHistory } from '../controllers/GetMatchHistory.js';
-import { DeleteTeam } from '../controllers/DeleteTeam.js';
-import { deleteGame } from '../controllers/DeleteGame.js';
-import { GetTeamDetail } from '../controllers/GetTeamDetail.js';
-import { GetMostRecentGame } from '../controllers/GetMostRecentGame.js';
-import { GetTeamsCount } from '../controllers/GetTeamsCount.js';
-import { GetPlayersCount } from '../controllers/GetPlayersCount.js';
-import { UpdatePlayer } from '../controllers/UpdatePlayer.js';
-import { getGameStats } from '../controllers/GetGameStats.js';
+import { login, signup } from '../controllers/authController.js';
+import { AddPlayer, RemovePlayer, GetPlayers, GetPlayersCount, getPlayerStats, UpdatePlayer } from '../controllers/playerController.js';
+import { AddTeam, GetTeams, UpdateTeam, DeleteTeam, GetTeamDetail, GetTeamsCount } from '../controllers/teamController.js';
+import { createNewGame, getGameDetails, getGameStats, EndGame, GetMostRecentGame, GetMatchHistory, deleteGame } from '../controllers/gameController.js';
+import { getLeaderboard } from '../controllers/leaderboardController.js';
 const BasicUser = express.Router();
 
 BasicUser.post('/login-req', login);

@@ -9,8 +9,8 @@ const gameSchema = new mongoose.Schema({
     awayTeamName: {type: String},
     homeTeamScore: { type: Number},
     awayTeamScore: { type: Number},
-    playerStats: [{ type: Schema.Types.ObjectId, ref: 'GameStat' }] // Array of references to player stats for this game
-  
+    playerStats: [{ type: Schema.Types.ObjectId, ref: 'GameStat' }], // Array of references to player stats for this game
+    isActive: {type: Boolean, default: true}
 });
 
 const Game = mongoose.model('Game', gameSchema);

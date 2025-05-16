@@ -1,6 +1,5 @@
 // controllers/leaderboardController.js
 import GameStat from '../models/gamestat.js';
-import Player from '../models/player.js';
 
 // Utility function to get top 10 players in a specific stat per game
 const getTopPlayers = async (statField) => {

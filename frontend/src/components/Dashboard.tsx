@@ -1,109 +1,3 @@
-// import Navbar from './navBar_componets/Navbar'; // Adjust the path as needed
-// import { Link, useNavigate } from 'react-router-dom';
-
-// // import store from '../redux/store.js'
-
-// const Dashboard = () => {
-// //   console.log(store.getState())
-//   const navigate = useNavigate();
-//   const handleEditTeams = () => {
-//     navigate('/edit-teams');
-//   };
-
-//   const handleStartNewMatch = () =>{
-//     navigate('/start-new-match');
-//   };
-
-//   const handleViewPlayerStats = () =>{
-//     navigate('/view-player-stats');
-//   };
-
-//   const handleViewTeams = () => {
-//     navigate('/view-teams');
-//   };
-
-//   const handleMatchHistory = () => {
-//     navigate('/get-match-history');
-//   };
-
-//   const handleDeleteTeam = () => {
-//     navigate('/remove-teams');
-//   };
-//     return (
-//       <div className="flex items-center justify-center h-screen">
-//         <div className="relative w-4/5 h-4/5 bg-neutral-100 shadow-lg rounded-lg">
-//           <Navbar pageIndex={1} />
-//           <div className="flex p-8 h-full"> {/* Adjusted for full height and flex layout */}
-//             <div className="flex flex-col flex-1 mr-6"> {/* 60% width for the left section, use flex-col for vertical layout */}
-//                 <h1 className="text-2xl font-bold mb-4">Dashboard Content</h1>
-//                 <button className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded mb-4 w-full" onClick={handleStartNewMatch}>
-//                 Start New Match
-//                 </button>
-//                 <div className="grid grid-cols-2 gap-4"> {/* Grid layout for buttons */}
-//                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleViewTeams}>View Teams</button>
-//                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleMatchHistory}>View Match History</button>
-//                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleEditTeams}>Edit Teams</button>
-//                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleViewPlayerStats}>View Player Stats</button>
-//                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded">
-//                     <Link to="/create-team" className="block w-full h-full text-center">
-//                         Add Teams
-//                     </Link>
-//                 </button>
-//                 <button className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded" onClick={handleDeleteTeam}>Remove Teams</button>
-
-//                 </div>
-//             </div>
-//             <div className="flex flex-col flex-1"> {/* 40% width for the right section */}
-//                 <h1 className="text-xl font-bold mb-4">Live Games</h1>
-//                 <p>Here you can place additional widgets or information relevant to the user.</p>
-//             </div>
-//             </div>
-//         </div>
-//       </div>
-//     );
-//   };
-
-// export default Dashboard;
-
-// import Sidebar from './Sidebar';
-// import VsCard from './VsCard';
-// import Navbar from './navBar_componets/Navbar'; // Adjust the path as needed
-// import { Link, useNavigate } from 'react-router-dom';
-
-// const Dashboard = () => {
-//   const navigate = useNavigate();
-
-//   const handleEditTeams = () => {
-//     navigate('/edit-teams');
-//   };
-
-//   const handleStartNewMatch = () =>{
-//     navigate('/start-new-match');
-//   };
-
-//   const handleViewPlayerStats = () =>{
-//     navigate('/view-player-stats');
-//   };
-
-//   const handleViewTeams = () => {
-//     navigate('/view-teams');
-//   };
-
-//   const handleMatchHistory = () => {
-//     navigate('/get-match-history');
-//   };
-//   const handleLeaderboards = () => {
-//     navigate('/leaderboard');
-//   };
-
-//   const handleDashboard = () => {
-//     navigate('/dashboard');
-//   };
-
-//   const handleDeleteTeam = () => {
-//     navigate('/remove-teams');
-//   };
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -204,13 +98,28 @@ const Dashboard = () => {
           <PlayerNumberCard count={playerCount} />{" "}
           {/* Display the TeamsCard component */}
         </div>
-        
 
-        <button
+        {/* <button
           className="fixed right-40 top-[80%] text-white font-bold py-2 px-2 rounded-full transition duration-250 ease-in-out transform hover:scale-105"
           onClick={handleStartNewMatch}
         >
           <img src={NewMatchLogo} alt="New Match" className="w-20 h-20" />
+        </button> */}
+        <button
+          onClick={handleStartNewMatch}
+          className="fixed right-40 top-[80%] flex items-center text-white font-bold py-2 px-4 rounded-full transition duration-250 ease-in-out transform hover:scale-105 group"
+        >
+          {/* Text appears on hover */}
+          <span className="opacity-0 group-hover:opacity-100 text-xl bg-neutral-300 p-3 rounded-lg text-black mr-2 transition-opacity duration-300">
+            Start a New Match
+          </span>
+
+          {/* Logo spins once on hover */}
+          <img
+            src={NewMatchLogo}
+            alt="New Match"
+            className="w-20 h-20 group-hover:animate-spin transition-transform duration-500"
+          />
         </button>
       </div>
     </div>

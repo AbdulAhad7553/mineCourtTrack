@@ -23,7 +23,7 @@ interface Player {
 const EditTeam = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+  console.log("id: ", id);
   // Team States
   const [teamName, setTeamName] = useState("");
   const [primaryColor, setPrimaryColor] = useState("#FFFFFF");
@@ -56,7 +56,7 @@ const EditTeam = () => {
         // Fetch team data
         const teamResponse = await axios.get(`${API_BASE_URL}/get-team-detail/${id}`);
         const teamData = teamResponse.data;
-        
+        console.log("teamData: ", teamData);
         setTeamName(teamData.name);
         setPrimaryColor(teamData.primaryColor);
         setSecondaryColor(teamData.secondaryColor);
